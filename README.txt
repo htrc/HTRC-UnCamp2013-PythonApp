@@ -4,36 +4,38 @@ Steps below show you how to run the demo applications against our Data API and S
 
 2.	Download the demo archive from [URL].
 
-3.	Unzip the archive. You will see files "configuration.py", "UnCampVolumeDemo.py", and "UnCampTokenCountDemo.py" under folder "uncampclient2013"
+3.	Unzip the archive. You will see files "uncamputils.py", "UnCampVolumeDemo.py", and "UnCampTokenCountDemo.py" under folder "HTRC-UnCamp2013-PythonApp".
 
-4.	Edit your client id and client secret in OAUTH2_CLIENT_ID and OAUTH2_CLIENT_SECRET defined in configuration.py. A sample setting is as follows.
+4.	Edit your client id and client secret in OAUTH2_CLIENT_ID and OAUTH2_CLIENT_SECRET defined in "UnCampVolumeDemo.py" and "UnCampTokenCountDemo.py". A sample setting is as follows.
 OAUTH2_CLIENT_ID = "YOUR_CLIENT_ID"
 OAUTH2_CLIENT_SECRET = "YOUR_CLIENT_SECRET"
 
-5.	Run the demos by typing following command. Assume your command line terminal is under folder "uncampclient2013".
+5.	Run the demos by typing following command. Assume your command line terminal is under folder "HTRC-UnCamp2013-PythonApp".
 > python UnCampVolumeDemo.py volume.zip
-This demo sends Solr query string ["XXX"] to Solr proxy, extracts volume id from XML returned, sends the volume id list to Data API to download contents of the volumes and finally saves the contents in a zip file whose name is provided through command line. 
+This demo sends Solr query string "allfields:war AND author:Bill" to Solr proxy, extracts volume id from XML returned, sends the volume id list to Data API to download contents of the volumes and finally saves the contents in a zip file whose name is provided through command line. 
 
 > python UnCampTokenCountDemo.py tokencount.zip 
-This demo sends Solr query string ["XXX"] to Solr proxy, extracts volume id from XML returned, sends the volume id list to Data API to get token count of the volumes and finally saves the results in a zip file whose name is provided through command line.
+This demo sends Solr query string "allfields:war AND author:Bill" to Solr proxy, extracts volume id from XML returned, sends the volume id list to Data API to get token count of the volumes and finally saves the results in a zip file whose name is provided through command line.
 
-6.	View the results. Each demo should create one zip file. UnCampVolumeDemo.py creates a zip file with [some number] folders. Each folder uses a volume id as its name and contains all the page contents as separated files. UnCampTokenCountDemo.py creates a zip file with [some number] text files. Each text file uses a volume id as its name and has the token count for that volume. 
+6.	View the results. Each demo app should create one zip file. UnCampVolumeDemo.py creates a zip file with [some number] folders. Each folder uses a volume id as its name and contains all the page contents as separated files. UnCampTokenCountDemo.py creates a zip file with [some number] text files. Each text file uses a volume id as its name and has the token count for that volume. 
 
-7.	You can change the requests sent to Data API/Solr by tweaking the parameters defined in configuration.py. There are two sets of parameters you can tweak for the demos. One is Data API parameters. The other one is Solr parameters. 
+7.	You can change the requests sent to Data API/Solr by tweaking the parameters defined in UnCampVolumeDemo.py or UnCampTokenCountDemo.py. The parameters are defined before any class and functions. There are two sets of parameters you can tweak for the demos. One is Data API parameters. The other one is Solr parameters. 
 
 7.1	Tweak VOLUME_PARAMETERS for Data API. 
-Change it as follows and rerun UnCampVolumeDemo.py in step 5.
+Change VOLUME_PARAMETERS (line 22 in UnCampVolumeDemo.py) as follows and rerun UnCampVolumeDemo.py in step 5.
 VOLUME_PARAMETERS = {'mets' : 'true'}
 This allows Data API to return mets record along with the volume content.
 
-Change VOLUME_PARAMETERS again as follows and rerun UnCampVolumeDemo.py in step 5.
+Change VOLUME_PARAMETERS (defined in line 22 in UnCampVolumeDemo.py) again as follows and rerun UnCampVolumeDemo.py in step 5.
 VOLUME_PARAMETERS = {'mets' : 'true', 'concat' : 'true'}
 This allows Data API to return mets record along with the volume content and concatenate all the pages into one single text file per volume.
 
 7.2	Tweak TOKENCOUNT_PARAMETERS for Data API. 
-Change it as follows and rerun UnCampTokenCountDemo.py in step 5.
-TOKENCOUNT_PARAMETERS = {'level' : 'page', 'sortBy' : 'count', 'sortOrder' : 'asc'} 
-This allows Data API to return token count in page level and sort the result by count in ascending order.   
+Change TOKENCOUNT_PARAMETERS (defined in line 22 in UnCampTokenCountDemo.py) as follows and rerun UnCampTokenCountDemo.py in step 5.
+TOKENCOUNT_PARAMETERS = {'level' : 'volume', 'sortBy' : 'count', 'sortOrder' : 'asc'} 
+This allows Data API to return token count in volume level and sort the result by count in ascending order.   
 
 7.3 Tweak Solr parameters
+You can tweak the request string sent to Solr Proxy by changing SOLR_METADATA_REQUEST (defined in line 27 in both UnCampVolumeDemo.py and UnCampTokenCountDemo.py)
+For example, you can change it as SOLR_METADATA_REQUEST={'q':'allfields:war AND author:Bill AND title:war'}. You can also specify how the result is presented by adding more common query parameters, e.g., SOLR_METADATA_REQUEST={'q':'allfields:war AND author:Bill AND title:war', 'fl':'id'} will only return the id field.
 
