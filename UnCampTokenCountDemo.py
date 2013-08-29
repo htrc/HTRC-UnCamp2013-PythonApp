@@ -2,8 +2,8 @@
 Created on Aug 23, 2013
 
 this python application makes request to Solor Proxy, extracts a list of volume id
-from response, authorizes with OAuth2 server, obtains a token, requests for token count 
-for the volumes from Data API, and save the token count result to a ZIP file.
+from response, authorizes with OAuth2 server, obtains an OAuth2 token, requests for 
+token count for the volumes from Data API, and saves the token count result to a ZIP file.
 '''
 
 import uncamputils
@@ -15,8 +15,8 @@ import xml.etree.ElementTree
 import os
 
 ''' OAuth2 credentials '''
-OAUTH2_CLIENT_ID = "aZOMwSm0wfb6ehZHD3ky04CR680a"
-OAUTH2_CLIENT_SECRET = "kvdwNKa2AqDpnWfrTOhJnNo9iEka"
+OAUTH2_CLIENT_ID = "PUT_YOUR_CLIENT_ID_HERE"
+OAUTH2_CLIENT_SECRET = "PUT_YOUR_CLIENT_SECRET_HERE"
 
 ''' Data API volume request parameters '''
 TOKENCOUNT_PARAMETERS = {}
@@ -24,7 +24,9 @@ TOKENCOUNT_PARAMETERS = {}
 
 
 ''' Solr request string '''
-SOLR_METADATA_REQUEST = {'q' : 'allfields:war AND author:Bill'}
+SOLR_METADATA_REQUEST = {'q' : 'title:war AND author:Bill'}
+# SOLR_METADATA_REQUEST = {'q' : 'publishDate:1884 AND author:Dickens'}
+# SOLR_METADATA_REQUEST = {'q' : 'publishDate:1884 AND author:Dickens', 'fl' : 'id'}
 
 class SolrRequest:
     ''' This class sends requests to Solr Proxy and parse the response to get a list of volume id.     
@@ -98,7 +100,7 @@ class DataAPIRequest:
 
 def main():        
     if (len(sys.argv) < 2):
-        print ("UnCampVolumeDemo.py <zip file>")
+        print ("UnCampTokenCountDemo.py <zip file>")
         sys.exit()
     zipfilename = str(sys.argv[1])
     fileExtension = os.path.splitext(zipfilename)[1]
@@ -113,7 +115,7 @@ def main():
     solrRequest.getVolumeIds(uncamputils.SOLR_METADATA_URL, urllib.urlencode(SOLR_METADATA_REQUEST))
     
     # get volume id from searching ocr
-#     solrRequest.getVolumeIds(configuration.SOLR_OCR_URL, urllib.quote(SOLR_OCR_REQUEST))
+#     solrRequest.getVolumeIds(uncamputils.SOLR_OCR_URL, urllib.quote(SOLR_OCR_REQUEST))
 
     # exit if no volume id is returned
     print("Number of volumes read: " + str(len(solrRequest.volumeList)))

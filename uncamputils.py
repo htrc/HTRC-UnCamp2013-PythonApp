@@ -20,8 +20,8 @@ TOKENCOUNT_URL_REQUEST = "/tokencount"
 
 OA2_EPR = "https://sandbox.htrc.illinois.edu:9443/oauth2endpoints/token?grant_type=client_credentials"
 DATAAPI_EPR = "https://sandbox.htrc.illinois.edu:25443/data-api"
-SOLR_METADATA_URL = "http://chinkapin.pti.indiana.edu:9446/solr/meta/select?"
-SOLR_OCR_URL = "http://chinkapin.pti.indiana.edu:9446/solr/ocr/select?q=ocr:"
+SOLR_METADATA_URL = "http://sandbox.htrc.illinois.edu:9446/solr/meta/select?"
+SOLR_OCR_URL = "http://sandbox.htrc.illinois.edu:9446/solr/ocr/select?q=ocr:"
 
 def obtainOAuth2Token(endpoint, clientID, clientSecret):
     """ function that authorizes with OAuth2 token endpoint, obtains and returns an OAuth2 token

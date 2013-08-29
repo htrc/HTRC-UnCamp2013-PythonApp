@@ -19,14 +19,15 @@ OAUTH2_CLIENT_ID = "PUT_YOUR_CLIENT_ID_HERE"
 OAUTH2_CLIENT_SECRET = "PUT_YOUR_CLIENT_SECRET_HERE"
 
 ''' Data API volume request parameters '''
-VOLUME_PARAMETERS = {}
-# VOLUME_PARAMETERS = {'mets':'true'}
-# VOLUME_PARAMETERS = {'mets':'true', 'concat':'true'}
+PAGE_PARAMETERS = {}
+# PAGE_PARAMETERS = {'mets':'true'}
+# PAGE_PARAMETERS = {'mets':'false', 'concat':'true'}
+# NOTE: "concat" and "mets" cannot be both set
 
 ''' Solr request string '''
-# SOLR_METADATA_REQUEST = {'q' : 'title:war AND author:Bill'}
+SOLR_METADATA_REQUEST = {'q' : 'title:war AND author:Bill'}
 # SOLR_METADATA_REQUEST = {'q' : 'publishDate:1884 AND author:Dickens'}
-SOLR_METADATA_REQUEST = {'q' : 'publishDate:1884 AND author:Dickens', 'start' : '0', 'rows' : '1'}
+# SOLR_METADATA_REQUEST = {'q' : 'publishDate:1884 AND author:Dickens', 'fl' : 'id'}
 
 class SolrRequest:
     ''' This class sends requests to Solr Proxy and parse the response to get a list of volume id.     
@@ -83,6 +84,7 @@ class DataAPIRequest:
         
         # urlencode the body query string
         urlEncodedBody = urllib.urlencode(self.parameters)
+        print("urlEncodedBody " + urlEncodedBody)
         
         # make the request
         # the request method must be POST
@@ -124,20 +126,23 @@ def main():
         print("No volume is returned from Solr. Change your request and try again.")
         sys.exit()
     
+    # append page number to each volume id
+    idList = [id + '[1,5,10]' for id in solrRequest.volumeList] 
+    
     # concatenate volume id with pipe '|'
-    volumeIdList = '|'.join(solrRequest.volumeList)
+    pageIdList = '|'.join(idList)
     
     # get token from OAuth2
     token = uncamputils.obtainOAuth2Token(uncamputils.OA2_EPR, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET)
     print("Obtained token: " + token)
     
     # fill in data api request parameters
-    parameters = {'volumeIDs' : volumeIdList}
-    parameters.update(VOLUME_PARAMETERS)
+    parameters = {'pageIDs' : pageIdList}
+    parameters.update(PAGE_PARAMETERS)
     
     # call Data api
     print("Requesting data from Data API")
-    apiRequest = DataAPIRequest(uncamputils.DATAAPI_EPR, uncamputils.VOLUME_URL_REQUEST, token, parameters)
+    apiRequest = DataAPIRequest(uncamputils.DATAAPI_EPR, uncamputils.PAGE_URL_REQUEST, token, parameters)
     zipcontent = apiRequest.request()
     
     # write zip stream to file
