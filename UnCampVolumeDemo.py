@@ -29,8 +29,8 @@ import xml.etree.ElementTree
 import os
 
 ''' OAuth2 credentials '''
-OAUTH2_CLIENT_ID = "CLIENT_ID"
-OAUTH2_CLIENT_SECRET = "CLIENT_SECRET"
+OAUTH2_CLIENT_ID = "t27LhHmMN3SHKondtleCqQAIwmka"
+OAUTH2_CLIENT_SECRET = "AJfIs8XlIFN0DowXfc11Tc7Yt90a"
 
 ''' Data API volume request parameters '''
 VOLUME_PARAMETERS = {}
