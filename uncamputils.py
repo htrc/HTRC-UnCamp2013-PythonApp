@@ -32,10 +32,10 @@ PAGE_URL_REQUEST = "/pages"
 VOLUME_URL_REQUEST = "/volumes"
 TOKENCOUNT_URL_REQUEST = "/tokencount"
 
-OA2_EPR = "https://sandbox.htrc.illinois.edu:9443/oauth2endpoints/token?grant_type=client_credentials"
-DATAAPI_EPR = "https://sandbox.htrc.illinois.edu:25443/data-api"
-SOLR_METADATA_URL = "http://sandbox.htrc.illinois.edu:9994/solr/meta/select?"
-SOLR_OCR_URL = "http://sandbox.htrc.illinois.edu:9994/solr/ocr/select?q=ocr:"
+OA2_EPR = "https://silvermaple.pti.indiana.edu/oauth2/token?grant_type=client_credentials"
+DATAAPI_EPR = "https://silvermaple.pti.indiana.edu:25443/data-api"
+SOLR_METADATA_URL = "http://chinkapin.pti.indiana.edu:9994/solr/meta/select?"
+SOLR_OCR_URL = "http://chinkapin.pti.indiana.edu:9994/solr/ocr/select?q=ocr:"
 
 def obtainOAuth2Token(endpoint, clientID, clientSecret):
     """ function that authorizes with OAuth2 token endpoint, obtains and returns an OAuth2 token
